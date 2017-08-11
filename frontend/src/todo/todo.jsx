@@ -74,10 +74,9 @@ export default class Todo extends Component {
 }
 */
 export default props => (
-<div>
-<PageHeader name='Tarefas' small='Cadastro'></PageHeader>
-<TodoForm />
-<TodoList />
-</div>
+    <div>
+        <PageHeader name='Tarefas' small='Cadastro'></PageHeader>
+        <TodoForm />
+        <TodoList />
+    </div>
 )
-116
