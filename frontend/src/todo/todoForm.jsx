@@ -4,18 +4,20 @@ import { bindActionCreators } from 'redux'
 
 import Grid  from '../template/grid'
 import IconButton from '../template/iconButton'
-import { changeDescription, search } from './todoActions'
+import { add, changeDescription, search,clear } from './todoActions'
 
-class TodoForm extends Comment {
+class TodoForm extends Component {
     constructor (props){
         super(props)
         this.keyHandler= this.keyHandler.bind(this)
     }
-    keyHandler = (e) => {
+    keyHandler (e)  {
+        const { add, search, description} = this.props
         if (e.key === 'Enter') {
-            e.shiftKey ? this.props.handleSearch() : this.props.handleAdd()
+console.log('no keyhandler....' + e.key + ' shift '+ e.shiftKey +' desc '+description )
+            e.shiftKey ? search() : add(description)
         } else if (e.key ==='Escape') {
-            this.props.handleClear()
+            clear()
         }
 
     }
@@ -23,19 +25,20 @@ class TodoForm extends Comment {
         this.props.search()
     }
     render () {
+        const { add, search, description} = this.props
         return (
         <div role='form' className='todoForm'>
             <Grid cols='12 9 10'>
                 <input id='descripttion' className='form-control'
                 placeholder='Adicione uma tarefa'
-                onKeyUp={keyHandler}
+                onKeyUp={this.keyHandler}
                 onChange={this.props.changeDescription}
                 value={this.props.description}></input>
             </Grid>       
             <Grid cols='12 3 2'>
-                <IconButton style='primary' icon='plus'   onClick={this.props.handleAdd}></IconButton>
-                <IconButton style='info'    icon='search' onClick={this.props.handleSearch}></IconButton>                 
-                <IconButton style='default' icon='close'  onClick={this.props.handleClear}></IconButton>
+                <IconButton style='primary' icon='plus'   onClick={()=> add(description) }></IconButton>
+                <IconButton style='info'    icon='search' onClick={()=> search()}></IconButton>                 
+                <IconButton style='default' icon='close'  onClick={this.props.clear}></IconButton>
             </Grid>
 
         </div>)
@@ -43,5 +46,5 @@ class TodoForm extends Comment {
 }
 
 const mapStateToProps = state => ({description: state.todo.description})
-const mapDispatchToProps =  dispatch => bindActionCreators( {changeDescription,search},dispatch)
+const mapDispatchToProps =  dispatch => bindActionCreators( {changeDescription,search,add,clear},dispatch)
 export default connect(mapStateToProps, mapDispatchToProps) (TodoForm)
